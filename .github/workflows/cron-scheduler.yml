@@ -1,0 +1,22 @@
+name: Run-5-Minutes
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+env:
+        WPE_SSHG_KEY_PRIVATE: ${{secrets.WPE_SSHG_KEY_PRIVATE}}
+        GHA_RUN_NO: ${{github.run_number}}
+        GHA_RUN_ID: ${{github.run_id}}
+        WPE_ENV: WPE_DEV
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Run Script
+      run: |
+        chmod +x script.sh
+        ./script.sh
