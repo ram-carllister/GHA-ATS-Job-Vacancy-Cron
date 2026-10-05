@@ -1,7 +1,7 @@
 name: Run-5-Minutes
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 env:
@@ -9,6 +9,11 @@ env:
         GHA_RUN_NO: ${{github.run_number}}
         GHA_RUN_ID: ${{github.run_id}}
         WPE_ENV: WPE_DEV
+
+concurrency:
+  group: wp-cron
+  cancel-in-progress: false
+
 jobs:
   run-script:
     runs-on: ubuntu-latest
