@@ -16,7 +16,7 @@ wp cron event list >> cron-run.log 2>> cron-run-error.log
 
 for url in \$(wp site list --field=url --archived=0 --spam=0 --deleted=0); do
   echo "Site: \$url" >> cron-run.log
-  wp cron event run --due-now --url="\$url" >> cron-run.log 2>> cron-run-error.log
+  wp cron event run --due-now --url="\$url" --exec='ini_set("display_errors", "0"); error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE & ~E_DEPRECATED);' >> cron-run.log 2>> cron-run-error.log
 done
 
 EOF
