@@ -14,16 +14,16 @@ echo "--- \$(date) ---" >> \$LOG
 echo "GitHub Run: https://github.com/$GHA_REPO/actions/runs/$GHA_RUN_ID" >> \$LOG
 
 # Pre details
-wp core version >> \$LOG 2>> \$ERR
+# wp core version >> \$LOG 2>> \$ERR
 
 for url in \$(wp site list --field=url --archived=0 --spam=0 --deleted=0); do
   echo "Site: \$url" >> \$LOG
-  wp cron event list --url="\$url" >> \$LOG 2>> \$ERR
+  # wp cron event list --url="\$url" >> \$LOG 2>> \$ERR
   wp cron event run --due-now --url="\$url" --exec='ini_set("display_errors", "0"); error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE & ~E_DEPRECATED);' >> \$LOG 2>> \$ERR \
     || echo "FAILED: \$url" >> \$ERR
 done
 
 # Keep logs bounded
-tail -n 5000 \$LOG > \$LOG.tmp && mv \$LOG.tmp \$LOG
+tail -n 15000 \$LOG > \$LOG.tmp && mv \$LOG.tmp \$LOG
 tail -c 2M  \$ERR > \$ERR.tmp && mv \$ERR.tmp \$ERR
 EOF
